@@ -1,0 +1,88 @@
+# Axios Full Specification
+
+## Core Loader
+`local Axios = loadstring(game:HttpGet("https://load.axios.x5i.ch"))()`
+
+## Docs
+
+https://docs.axios.x5i.ch/
+
+## Quick Start Pattern
+```lua
+Axios:Init()
+Axios:Connect(function()
+    Axios.Window({"Title"})
+        if Axios.Button({"Click"}).clicked() then print("Hi") end
+    Axios.End()
+end)
+```
+
+## State Management (`Axios.State`)
+- `Axios.State(initialValue)`: Persistent reactive value by ID.
+- `Axios.WeakState(initialValue)`: Resets when disconnected from widgets.
+- `Axios.VariableState(var, cb)`: Syncs with a local variable.
+- `Axios.TableState(tbl, key, cb?)`: Syncs with a table key.
+- `Axios.ComputedState(state, transform)`: Derived from another state.
+
+## Core API Reference
+
+- `Axios:Init(parent?, event?, allowMultiple?)`: Always call first.
+- `Axios:Connect(callback)`: Hooks render loop.
+- `Axios.End()`: Mandatory closer for containers.
+- `Axios.Shutdown()`: Total cleanup.
+- `Axios.Append(instance)`: Inject raw GUI instance.
+- `Axios.PushConfig(delta)` / `Axios.PopConfig()`: Scoped styling.
+- `Axios.PushId(id)` / `Axios.PopId()`: Loop iteration identity.
+- `Axios.SetNextWidgetID(id)`: Force next widget ID.
+
+## Widget Catalog
+
+### Containers (Must use `Axios.End()`)
+- `Window({title, ...}, {states})`: Root widget.
+- `MenuBar()`: Window top bar context.
+- `Menu({label})`: Dropdown in menu bar or other menus.
+- `Tree({label}, {states})`: Collapsable node.
+- `CollapsingHeader({label})`: Styled tree header.
+- `TabBar()`: Horizontal tab container.
+- `Tab({label}, {states})`: Individual tab.
+- `Group()`: Layout grouping.
+- `Table({numCols, header, borders...}, {states})`: Grid layout.
+- `Indent(width?)`: Horizontal offset.
+- `SameLine(offset?, spacing?)`: Prevent new row.
+
+### Clickables
+- `Button({text, size})`: Standard button.
+- `SmallButton({text, size})`: Compact, no padding.
+- `Checkbox({label}, {isChecked})`: Boolean toggle.
+- `RadioButton({label, index}, {indexState})`: Multi-choice circles.
+- `MenuItem({text, keycode, modifiers})`: In-menu button.
+- `MenuToggle({text}, {isChecked})`: In-menu toggle.
+
+### Text & Media
+- `Text({text, wrapped, color, richText})`: Shared label.
+- `SeparatorText({text})`: Section header line.
+- `InputText({label, hint, ...}, {text})`: Box for typing.
+- `Image({id, size, ...})`: Texture display.
+- `ImageButton({id, size, ...})`: Clickable texture.
+
+### Numeric Inputs (Typed)
+- Supports: `Num`, `Vector2`, `Vector3`, `UDim`, `UDim2`, `Rect`, `Color3`, `Color4`.
+- `Input[Type]({label, ...}, {number/color})`: Text box input.
+- `Drag[Type]({label, ...}, {number/color})`: Drag-to-change.
+- `Slider[Type]({label, ...}, {number/color})`: Constrained slider.
+
+### Selection
+- `Selectable({text, index}, {indexState})`: List item.
+- `Combo({label}, {indexState})`: `HasChildren` dropdown.
+- `ComboArray({label}, {indexState}, array)`: Auto-populated list.
+- `ComboEnum({label}, {indexState}, Enum)`: Auto-populated enum.
+
+### Visualizers
+- `ProgressBar({label, ...}, {progress})`: 0-1 bar.
+- `PlotLines({label, ...}, {values})`: Line graph.
+- `PlotHistogram({label, ...}, {values})`: Bar chart.
+
+## Properties
+- `Axios.Disabled`: Freeze render loop when true.
+- `Axios.Args`: Named argument metadata.
+- `Axios.Internal`: Low-level backend access.
